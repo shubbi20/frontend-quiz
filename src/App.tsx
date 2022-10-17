@@ -1,24 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Route, Routes } from "react-router-dom";
+import Login from "./component/login/login";
+import Sign from "./component/signup/signup";
+import MenuBar from "./component/menubar";
+import { UserSession } from "./apiUtil/apiUrl";
+import { useEffect, useState } from "react";
+import Home from "./component/home/home";
+import Logout from "./component/logout/logout";
 
 function App() {
+  const [token, setToken] = useState<UserSession>();
+
+  useEffect(() => {
+    if (localStorage.getItem("quizSessionData")) {
+      const userData: string = JSON.parse(
+        localStorage.getItem("quizSessionData") || "s"
+      );
+      if (typeof userData !== "string") {
+        setToken(userData);
+      }
+    }
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <MenuBar />
+      <Routes>
+        {!token && <Route path="/" element={<Login />}></Route>}
+        {!token && <Route path="/login" element={<Login />}></Route>}
+        {!token && <Route path="/signup" element={<Sign />}></Route>}
+        {token && <Route path="/home" element={<Home />}></Route>}
+        {token && <Route path="/logout" element={<Logout />}></Route>}
+        <Route path="/*" element={<Login />}></Route>
+      </Routes>
     </div>
   );
 }
