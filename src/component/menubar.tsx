@@ -1,11 +1,11 @@
 import { Menu } from "antd";
 import "antd/dist/antd.min.css";
 import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-import { UserSession } from "../apiUtil/apiUrl";
 
 const MenuBar = () => {
-  const [userSession, setUserSession] = useState<UserSession>();
+  const [cookies, setCookie] = useCookies(["quizCookie"]);
 
   const [items, setItems] = useState([
     {
@@ -19,28 +19,23 @@ const MenuBar = () => {
   ]);
 
   useEffect(() => {
-    if (localStorage.getItem("quizSessionData")) {
-      const userData: string | UserSession = JSON.parse(
-        localStorage.getItem("quizSessionData") || "s"
-      );
-      if (typeof userData !== "string") {
-        setUserSession(userData);
-      }
-
-      if ((userData as UserSession).token) {
-        setItems([
-          {
-            key: 3,
-            label: "Home",
-          },
-          {
-            key: 4,
-            label: "Logout",
-          },
-        ]);
-      }
+    if (cookies.quizCookie) {
+      setItems([
+        {
+          key: 3,
+          label: "Home",
+        },
+        {
+          key: 5,
+          label: "Draft",
+        },
+        {
+          key: 4,
+          label: "Logout",
+        },
+      ]);
     }
-  }, [localStorage.getItem("quizSessionData")]);
+  }, [cookies.quizCookie]);
 
   const navigate = useNavigate();
   return (
@@ -55,6 +50,8 @@ const MenuBar = () => {
           navigate("login");
         } else if (key === "3") {
           navigate("home");
+        } else if (key === "5") {
+          navigate("draft");
         } else {
           navigate("logout");
         }

@@ -3,16 +3,19 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { loginApi } from "../../apiUtil/userApi";
+import { loginApi } from "../utils/apiUtil/userApi";
+import { useCookies } from "react-cookie";
+import styled from "styled-components";
 
 export const Login = () => {
   const navigate = useNavigate();
+  const [cookies, setCookie] = useCookies(["quizCookie"]);
 
   useEffect(() => {
-    if (localStorage.getItem("quizSessionData")) {
+    if (cookies.quizCookie) {
       navigate("/home");
     }
-  }, []);
+  }, [cookies]);
 
   const onFinish = async (values: any) => {
     console.table(values);
@@ -27,10 +30,12 @@ export const Login = () => {
         name: data.name,
         role: data.role,
       };
-      localStorage.setItem("quizSessionData", JSON.stringify(userData));
+      setCookie("quizCookie", userData, {
+        path: "/",
+        maxAge: 86400,
+      });
       message.success("Successfully Logged In");
       navigate("/home");
-      window.location.reload();
     } else {
       console.log("error", error);
       message.error(error);
@@ -38,14 +43,8 @@ export const Login = () => {
   };
 
   return (
-    <div
-      style={{
-        margin: "5em auto",
-        padding: "0 auto",
-        width: "55%",
-      }}
-    >
-      <h1 style={{ fontSize: "24px", fontFamily: "monospace" }}>Login</h1>
+    <Wrapper>
+      <h1>Login</h1>
       <Form
         name="normal_login"
         className="login-form"
@@ -123,8 +122,18 @@ export const Login = () => {
           Or <a href="/Signup">register now!</a>
         </Form.Item>
       </Form>
-    </div>
+    </Wrapper>
   );
 };
+
+export const Wrapper = styled.div`
+  margin: 5em auto;
+  padding: 0 auto;
+  width: 55%;
+  h1 {
+    font-size: 24px;
+    font-family: monospace;
+  }
+`;
 
 export default Login;

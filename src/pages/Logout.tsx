@@ -1,12 +1,12 @@
 import { Button, message } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 const Logout = () => {
-  const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies(["quizCookie"]);
+
   const handleOnClick = () => {
-    localStorage.removeItem("quizSessionData");
-    navigate("/login");
-    window.location.reload();
+    removeCookie("quizCookie");
+    window.location.replace("login");
     message.success("you are successfully logout");
   };
 
