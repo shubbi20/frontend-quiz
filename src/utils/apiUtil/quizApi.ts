@@ -259,3 +259,73 @@ export const getQuizByPermalink = async ({
     ];
   }
 };
+
+export const getTestQuizApi = async ({ permalink }: { permalink: string }) => {
+  try {
+    const url = apiUrl + `/quiz/testquiz/${permalink}`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      if (data.error) {
+        return [null, data.error];
+      } else {
+        return [null, data.message];
+      }
+    }
+    return [data.data, null];
+  } catch (err: any) {
+    return [
+      null,
+      {
+        error: "Error,Failed to fetch data",
+      },
+    ];
+  }
+};
+
+export const evaluateQuizApi = async ({
+  permalink,
+  questions,
+}: {
+  permalink: string;
+  questions: Ques[];
+}) => {
+  try {
+    const url = apiUrl + `/quiz/evaluate`;
+
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
+        questions,
+        permalink,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      if (data.error) {
+        return [null, data.error];
+      } else {
+        return [null, data.message];
+      }
+    }
+
+    return [data, null];
+  } catch (err: any) {
+    return [
+      null,
+      {
+        error: "Error,Failed to fetch data",
+      },
+    ];
+  }
+};

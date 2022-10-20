@@ -11,6 +11,7 @@ import Logout from "./pages/Logout";
 import { UserAuthContext } from "./utils/user-auth-context";
 import { Draft } from "./pages/Draft";
 import { AddQuiz } from "./pages/AddQuiz";
+import { TakeQuiz } from "./pages/TakeQuiz";
 
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies(["quizCookie"]);
@@ -38,6 +39,7 @@ function App() {
           {cookies.quizCookie && (
             <Route path="/AddQuiz/:permalink" element={<AddQuiz />}></Route>
           )}
+          <Route path="/TakeQuiz/:permalink" element={<TakeQuiz />}></Route>
           <Route path="/*" element={<Login />}></Route>
         </Routes>
       </div>

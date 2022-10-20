@@ -9,7 +9,6 @@ export const Draft = () => {
 
   const fetchData = async () => {
     if (token) {
-      console.log(token);
       const [data, error] = await getQuizApi(token);
       if (data) {
         setQuizData(data.data);
@@ -18,6 +17,7 @@ export const Draft = () => {
       }
     }
   };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -29,6 +29,7 @@ export const Draft = () => {
           return (
             <DraftCard
               fetchData={fetchData}
+              permalink={current.permalink}
               quizQuestions={current.questions}
               quizTitle={current.title}
               id={current.id}

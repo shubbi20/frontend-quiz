@@ -1,8 +1,11 @@
 import { Button, message } from "antd";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { deleteQuizApi } from "../utils/apiUtil/quizApi";
 import { UserAuthContext } from "../utils/user-auth-context";
 import { DraftQuizBox } from "./DraftCard";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { CopyOutlined } from "@ant-design/icons";
 
 interface props {
   permalink: string;
@@ -33,16 +36,30 @@ export const PublishSection: React.FC<props> = ({
       }
     }
   };
+  const onCopy = () => {
+    message.success("Copied");
+  };
 
   return (
     <div>
       <DraftQuizBox>
         <h2>{quizTitle}</h2>
         <h3>
-          <a href={`http://localhost:3001/quiz/take-quiz/${permalink}`}>
+          <CopyToClipboard
+            text={`http://localhost:3000/TakeQuiz/${permalink}`}
+            onCopy={() => onCopy()}
+          >
+            <CopyOutlined />
+          </CopyToClipboard>
+          <a
+            href={`http://localhost:3000/TakeQuiz/${permalink}`}
+            style={{ marginLeft: "10px" }}
+          >
+            {" "}
             {permalink}
           </a>
         </h3>
+
         <Button type="dashed" onClick={() => deleteQuiz()}>
           Delete
         </Button>

@@ -1,6 +1,7 @@
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Input, Select, Space } from "antd";
 import { useEffect, useState } from "react";
+import styled from "styled-components";
 
 interface props {
   Question: string;
@@ -46,13 +47,7 @@ const AddQuesCard: React.FC<props> = ({
   };
 
   return (
-    <div
-      style={{
-        border: "1px solid grey",
-        margin: "1rem auto",
-        padding: "10px",
-      }}
-    >
+    <Wrapper>
       <Input
         placeholder="Question"
         size="middle"
@@ -106,8 +101,13 @@ const AddQuesCard: React.FC<props> = ({
       >
         {children}
       </Select>
-    </div>
+    </Wrapper>
   );
 };
 
+const Wrapper = styled.div`
+  border: 1px solid grey;
+  margin: 1rem auto;
+  padding: 10px;
+`;
 export default AddQuesCard;

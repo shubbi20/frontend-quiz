@@ -18,7 +18,6 @@ export const Login = () => {
   }, [cookies]);
 
   const onFinish = async (values: any) => {
-    console.table(values);
     const [data, error] = await loginApi({
       email: values.email,
       password: values.password,

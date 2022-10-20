@@ -20,13 +20,13 @@ export const AddQuiz = () => {
   const navigate = useNavigate();
   const token = useContext(UserAuthContext);
   const { permalink } = useParams();
+
   const fetchData = async () => {
     if (token) {
       const [data, error] = await getQuizByPermalink({
         token,
         permalink: permalink as string,
       });
-      console.log(data);
       if (data && data.questions.length > 0) {
         setQuestion(data.questions);
         setTitle(data.title);
