@@ -292,9 +292,13 @@ export const getTestQuizApi = async ({ permalink }: { permalink: string }) => {
 export const evaluateQuizApi = async ({
   permalink,
   questions,
+  role,
+  email,
 }: {
   permalink: string;
   questions: Ques[];
+  role: string;
+  email?: string;
 }) => {
   try {
     const url = apiUrl + `/quiz/evaluate`;
@@ -304,6 +308,8 @@ export const evaluateQuizApi = async ({
       body: JSON.stringify({
         questions,
         permalink,
+        role,
+        email,
       }),
       headers: {
         "Content-Type": "application/json",

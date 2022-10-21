@@ -1,7 +1,9 @@
-import { Button, message } from "antd";
+import { Alert, Button, message } from "antd";
 import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import { useParams } from "react-router-dom";
 import { TakeQuizSection } from "../component/TakeQuizSection";
+import { getAttemptApi } from "../utils/apiUtil/attemptApi";
 import { evaluateQuizApi, getTestQuizApi } from "../utils/apiUtil/quizApi";
 import { quizSchema } from "../utils/joi-schema/quiz-schema";
 
@@ -17,7 +19,10 @@ export const TakeQuiz = () => {
   const [questions, setQuestion] = useState<TypeQues[]>([]);
   const [title, setTitle] = useState<string>("");
   const [score, setScore] = useState("");
-
+  const [user, setUser] = useState("non-user");
+  const [attempt, setAttempt] = useState<any>();
+  // const [email, setEmail] = useState();
+  const [cookies, setCookie, removeCookie] = useCookies(["quizCookie"]);
   const fetchData = async () => {
     const [data, error] = await getTestQuizApi({
       permalink: permalink as string,
@@ -38,7 +43,23 @@ export const TakeQuiz = () => {
     );
   };
 
+  const getAttemptData = async (token: string) => {
+    const [data, error] = await getAttemptApi({
+      token,
+      permalink: permalink as string,
+    });
+    if (data) {
+      setAttempt(data.data);
+    }
+    console.log(data);
+  };
+
   useEffect(() => {
+    if (cookies.quizCookie) {
+      setUser("user");
+      console.log("dddddd", cookies.quizCookie.token);
+      getAttemptData(cookies.quizCookie.token);
+    }
     fetchData();
   }, []);
 
@@ -47,9 +68,12 @@ export const TakeQuiz = () => {
     if (error) {
       message.error(error.message);
     } else {
+      console.log("sssss", user);
       const [data, error] = await evaluateQuizApi({
         permalink: permalink as string,
         questions,
+        role: user,
+        email: cookies.quizCookie?.email,
       });
       if (data) {
         setScore(`${data.correct}/${data.total}`);
@@ -63,6 +87,12 @@ export const TakeQuiz = () => {
     <div>
       {score.length < 2 ? (
         <div>
+          {attempt && (
+            <Alert
+              message={`You have attempted this quiz ${attempt.attemptCount} times. Your last score was: ${attempt.lastScore} and your highest score: ${attempt.highestScore} `}
+              type="info"
+            />
+          )}
           {questions &&
             questions.map((ele) => {
               return (
