@@ -1,3 +1,3 @@
-const apiUrl = "http://localhost:3001";
+const apiUrl = "https://quizapp-be.herokuapp.com";
 
 export default apiUrl;

@@ -9,8 +9,8 @@ const Logout = () => {
 
   const handleOnClick = () => {
     removeCookie("quizCookie");
-    window.location.reload();
     message.success("you are successfully logout");
+    window.location.reload();
   };
 
   return (

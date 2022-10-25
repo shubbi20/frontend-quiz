@@ -15,9 +15,9 @@ export const quizSchema = Joi.object().keys({
         .label("answer"),
       options: Joi.array()
         .items(
-          Joi.string().trim().min(1).lowercase().required(),
-          Joi.string().min(1).lowercase()
+          Joi.string().trim().min(1).lowercase().label("option").required()
         )
+        .min(1)
         .required()
         .unique()
         .label("options"),
