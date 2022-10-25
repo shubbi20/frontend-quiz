@@ -46,13 +46,13 @@ export const PublishSection: React.FC<props> = ({
         <h2>{quizTitle}</h2>
         <h3>
           <CopyToClipboard
-            text={`http://localhost:3000/TakeQuiz/${permalink}`}
+            text={`https://quiiz-web.netlify.app/TakeQuiz/${permalink}`}
             onCopy={() => onCopy()}
           >
             <CopyOutlined />
           </CopyToClipboard>
           <a
-            href={`http://localhost:3000/TakeQuiz/${permalink}`}
+            href={`https://quiiz-web.netlify.app/TakeQuiz/${permalink}`}
             style={{ marginLeft: "10px" }}
           >
             {" "}
