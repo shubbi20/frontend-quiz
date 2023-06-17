@@ -1,3 +1,3 @@
-const apiUrl = "https://quizapp-be.herokuapp.com";
+const apiUrl = "https://quiz-be.cyclic.app";
 
 export default apiUrl;
